@@ -1,26 +1,22 @@
 'use client';
 import css from './Edit.module.css'
 import {useAuthStore} from "@/lib/store/authStore";
-import {register, RegisterRequest, updateMe} from "@/lib/api/clientApi";
-import axios from "axios";
+import {updateMe} from "@/lib/api/clientApi";
 import {useEffect, useState} from "react";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
-
+import Image from "next/image";
 
 export default function EditProfile() {
     const router = useRouter()
     const setUser = useAuthStore((state) => state.setUser);
     const user = useAuthStore((state) => state.user);
     const [username, setUserName] = useState(user?.username ?? "")
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
         setUserName(event.target.value);
     };
-    const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>):Promise<void> => {
         event.preventDefault();
-        const email = user?.email ?? "";
-        console.log("UPDATE PAYLOAD:", {email});
-        const updatedUser = await updateMe({ username, email });
+        const updatedUser = await updateMe({username});
         setUser(updatedUser);
         router.push('/profile')
     }
@@ -33,11 +29,11 @@ export default function EditProfile() {
             <div className={css.profileCard}>
                 <h1 className={css.formTitle}>Edit Profile</h1>
 
-                <img src={user?.avatar}
-                     alt="User Avatar"
-                     width={120}
-                     height={120}
-                     className={css.avatar}
+                <Image src={user?.avatar ?? ""}
+                       alt="User Avatar"
+                       width={120}
+                       height={120}
+                       className={css.avatar}
                 />
 
                 <form className={css.profileInfo} onSubmit={handleSaveUser}>

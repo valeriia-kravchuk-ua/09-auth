@@ -16,12 +16,10 @@ import axios from "axios";
             const res = await login(formValues);
 
             if (res) {
-                console.log('res-login-user', res)
                 setUser(res);
                 router.push('/profile');
             } else {
-                setError('Invalid email or password');
-                console.log('ERROR:(((', error)
+                setError('Invalid email or password')
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {

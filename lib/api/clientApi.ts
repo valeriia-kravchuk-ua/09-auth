@@ -10,7 +10,7 @@ interface NotesResponse {
 
 export  type Tag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
-export interface OrderFormValues {
+export interface CreateNoteRequest {
     title: string;
     content: string;
     tag: Tag;
@@ -26,7 +26,6 @@ export type LoginRequest = {
     password: string;
 };
 export type UpdateRequest = {
-    email: string;
     username: string;
 }
 type CheckSessionRequest = {
@@ -55,7 +54,7 @@ export const fetchNoteById = async (id: string) => {
     return res.data;
 };
 
-export async function createNote(data: OrderFormValues): Promise<Note> {
+export async function createNote(data: CreateNoteRequest): Promise<Note> {
     const response = await baseLocalUrl.post<Note>("/notes", data);
     return response.data;
 }

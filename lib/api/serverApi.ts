@@ -5,6 +5,7 @@ import {Tag} from "@/lib/api/clientApi";
 
 import {cookies} from "next/headers";
 import {baseLocalUrl} from "./api";
+import {User} from "@/types/user";
 
 interface NotesResponse {
     notes: Note[];
@@ -45,17 +46,11 @@ export const fetchNoteById = async (id: string) => {
     return res.data;
 };
 
-
-export function checkSession() {
-
-}
-
-
 export async function getMe() {
     const cookieStore = await cookies();
     const cookieHeader = cookieStore.toString();
 
-    const res = await baseLocalUrl.get("/users/me", {
+    const res = await baseLocalUrl.get<User>("/users/me", {
         headers: {
             Cookie: cookieHeader,
         },
