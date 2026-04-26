@@ -2,7 +2,6 @@
 
 import {useEffect, useState} from "react";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
-
 import {toast, Toaster} from "react-hot-toast";
 import css from "./page.module.css";
 import SearchBox from "@/components/SearchBox/SearchBox";
@@ -17,21 +16,17 @@ type Props = {
 };
 
 const NotesClient = ({tag}: Props) => {
-
-
     const [currentPage, setCurrentPage] = useState(1);
-
     const [query, setQuery] = useState('');
 
     const {data, isLoading, isError, isSuccess} = useQuery({
         queryKey: ['notes', tag ?? 'all', query, currentPage],
-        queryFn: () => fetchNotes(currentPage, query, tag),
+        queryFn: () => fetchNotes( query, tag, currentPage),
         placeholderData: keepPreviousData,
     });
 
     const notes = data?.notes ?? [];
     const totalPages = data?.totalPages ?? 0;
-
 
     useEffect(() => {
         if (isLoading) {
@@ -48,8 +43,6 @@ const NotesClient = ({tag}: Props) => {
 
     }, [isLoading, isError]);
 
-
-
     const debounced = useDebouncedCallback(
         (text) => {
             setQuery(text);
@@ -57,6 +50,11 @@ const NotesClient = ({tag}: Props) => {
         },
         1000
     );
+
+    const handlePageChange = (nextPage: number): void => {
+        setQuery("");
+        setCurrentPage(nextPage);
+    };
 
     return (
         <>
@@ -67,7 +65,7 @@ const NotesClient = ({tag}: Props) => {
                         <Pagination
                             pageCount={totalPages}
                             forcePage={currentPage}
-                            onPageChange={setCurrentPage}
+                            onPageChange={handlePageChange}
                         />
                     )}
                     <Toaster

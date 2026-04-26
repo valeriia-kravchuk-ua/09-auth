@@ -32,7 +32,7 @@ type CheckSessionRequest = {
     success: boolean;
 };
 
-export async function fetchNotes(page?: number, query?: string, tag?: Tag): Promise<NotesResponse> {
+export async function fetchNotes( query?: string, tag?: Tag, page?: number,): Promise<NotesResponse> {
     const response = await baseLocalUrl.get<NotesResponse>(
         "/notes",
         {
