@@ -51,11 +51,6 @@ const NotesClient = ({tag}: Props) => {
         1000
     );
 
-    const handlePageChange = (nextPage: number): void => {
-        setQuery("");
-        setCurrentPage(nextPage);
-    };
-
     return (
         <>
             <section className={css.app}>
@@ -65,7 +60,7 @@ const NotesClient = ({tag}: Props) => {
                         <Pagination
                             pageCount={totalPages}
                             forcePage={currentPage}
-                            onPageChange={handlePageChange}
+                            onPageChange={setCurrentPage}
                         />
                     )}
                     <Toaster
